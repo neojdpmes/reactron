@@ -16,8 +16,8 @@ class Socket {
       client.on("upload", (image) => {
         console.log("Received image", image.name); // not displayed
         // Check if dir exists
-        const dir = `${this.directory}/${image.album}`
-        if (!existsSync(dir)) mkdirSync(dir);
+        const dir = `./${this.directory}/${image.album}`
+        if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
         writeFileSync(`${dir}/${image.name}`, Buffer.from(image.data, 'base64'));
         client.emit('file-saved', { id: image.id, name: image.name, album: image.album });
       })
