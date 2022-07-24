@@ -1,8 +1,7 @@
-const { writeFileSync, existsSync, mkdirSync, createWriteStream } = require('fs');
+const { writeFileSync, existsSync, mkdirSync, createWriteStream, appendFile } = require('fs');
+const {Base64Decode} = require("base64-stream");
 const express = require('express')
-const fileUpload = require('express-fileupload');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 
 const DIRECTORY = 'files';
 
@@ -21,6 +20,17 @@ app.post('/', function (req, res) {
   req.pipe(createWriteStream(`${dir}/${body.name}`));
   req.on('end', () => {
     res.send({ status: 200, message: 'File saved' })
+  });
+})
+
+app.post('/parts', function (req, res) {
+  console.log(req.body)
+  const body = JSON.parse(req.headers.params);
+  const dir = `./${DIRECTORY}/${body.album}`;
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  req.pipe(new Base64Decode()).pipe(createWriteStream(`${dir}/${body.name}`, { flags: 'a' }));
+  req.on('end', () => {
+    res.send({ status: 200, message: 'File part saved' })
   });
 })
 
