@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 if (require('electron-squirrel-startup')) return app.quit();
 const { SocketService } = require('./socket');
+const { express } = require('./express');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
