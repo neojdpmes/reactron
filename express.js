@@ -9,7 +9,6 @@ const app = express()
 app.use(cors());
 
 app.get('/', function (req, res) {
-  console.log('hello');
   res.send('Hello World')
 })
 
@@ -24,7 +23,6 @@ app.post('/', function (req, res) {
 })
 
 app.post('/parts', function (req, res) {
-  console.log(req.body)
   const body = JSON.parse(req.headers.params);
   const dir = `./${DIRECTORY}/${body.album}`;
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
